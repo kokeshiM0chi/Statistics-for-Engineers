@@ -1,6 +1,6 @@
-# kokeshi-question #04: `2023-10-11-SRECon-Dublin/2023-10-08 SLOs at SRECon.ipynb` の解説
+# 解説: `2023-10-11-SRECon-Dublin/2023-10-08 SLOs at SRECon.ipynb`
 
-対象ファイル: [`2023-10-11-SRECon-Dublin/2023-10-08 SLOs at SRECon.ipynb`](../2023-10-11-SRECon-Dublin/2023-10-08%20SLOs%20at%20SRECon.ipynb)
+対象ファイル: [`2023-10-11-SRECon-Dublin/2023-10-08 SLOs at SRECon.ipynb`](../../2023-10-11-SRECon-Dublin/2023-10-08%20SLOs%20at%20SRECon.ipynb)
 
 ## 質問
 
@@ -18,7 +18,7 @@ SRECon EMEA 2023 の講演中に画面に映すデモ用ファイルなので、
 - **夜と昼でリクエスト数に大きな差がある**
   - 深夜3時台: 平均 約1.4件/分
   - 昼13時台: 平均 約9.4件/分
-  - → [#01](01-slo-error-budget-low-traffic.md) の質問の状況そのもの
+  - → [kokeshi-question #01](../../kokeshi-question/01-slo-error-budget-low-traffic.md) の質問の状況そのもの
 - 2週間分のデータを 6回繰り返して長くし（`repeat`）、わざと障害を2つ入れている（`inject_errors`）
 
 | 障害 | 時間 | 失敗率 | その間のリクエスト | 失敗件数 |
@@ -53,7 +53,7 @@ sli = 直近28日の good の合計 / 直近28日の total の合計
 error_budget = (sli - slo) / (1 - slo)   # 100% = 全く使っていない、0% = 使い切った
 ```
 
-（`1 - slo` の意味は [#03](03-what-is-1-minus-slo.md) を参照）
+（`1 - slo` の意味は [kokeshi-question #03](../../kokeshi-question/03-what-is-1-minus-slo.md) を参照）
 
 | | 障害の前 | 障害の後 | 使った予算 |
 |---|---|---|---|
