@@ -6,30 +6,20 @@
 - テーマは「**リクエスト数が少ない時間帯の分位数（パーセンタイル）は信用できない**」
   - 2023 の [SLOs at SRECon の解説](../2023-10-11-SRECon-Dublin/2023-10-08%20SLOs%20at%20SRECon.md) が「件数・バジェット」側の話だったのに対し、こちらは「レイテンシ・分位数」側の話
 
-## 動かし方（そのままでは動かない）
+## 動かし方
 
-セル2の `%run prelude.py` がエラーになる。`prelude.py` の後半が Circonus（作者の当時の勤務先の監視 SaaS）専用で、
-`circllhist` / `circonusapi` ライブラリと、作者の手元にある `~/work/.circonusrc.json`（API キー）を読みにいくため。
-ノートブック本体では Circonus の機能は使っていないので、その部分を読み飛ばせば動く。
+`stats-lab`（`~/.zshrc` の関数。seaborn / scipy / tabulate 込み）で起動し、上から順に実行すれば動く。
+セル1の `!pip install ...` は実行しなくてよい（必要なパッケージは起動時に入っている）。
 
-1. 追加パッケージ（seaborn / scipy / tabulate）を入れて起動する
-   ```bash
-   uv run --python 3.12 \
-     --with jupyterlab --with pandas --with numpy --with matplotlib --with imageio \
-     --with seaborn --with scipy --with tabulate \
-     jupyter lab --notebook-dir="$HOME/kokeshi/Statistics-for-Engineers"
-   ```
-2. セル2の `%run prelude.py` を次の1行に書き換えて実行する（Circonus 部分の手前までだけ読み込む）
-   ```python
-   exec(open("prelude.py").read().split("from circllhist")[0])
-   ```
-3. セル1の `!pip install ...` は実行しなくてよい（手順1で入れている）
-4. 終わったら書き換えを元に戻す
-   ```bash
-   git restore "2022-10-24-SRECon-Amsterdam/SRECon EMEA 2022 Amsterdam.ipynb"
-   ```
+### 元のままでは動かなかった理由と修正（kokeshi ブランチで修正済み）
 
-この手順で最後のセルまでエラーなく実行できることを確認済み。
+元の `prelude.py` は後半が Circonus（作者の当時の勤務先の監視 SaaS）専用で、
+`circllhist` / `circonusapi` ライブラリと、作者の手元にある `~/work/.circonusrc.json`（API キー）を読みにいくため、
+セル2の `%run prelude.py` がエラーになっていた。
+
+ノートブック本体では Circonus の機能は使っていないので、`prelude.py` のその部分を `try / except` で囲み、
+ライブラリや設定ファイルがなければ読み飛ばすように修正した。ノートブック自体は変更していない。
+修正後、ノートブックを最後のセルまでエラーなく実行できることを確認済み。
 
 ### `prelude.py` が用意しているもの
 

@@ -34,11 +34,16 @@ def TAB(*args, **kwargs): print(tabulate(*args, **kwargs))
 mpl.rcParams['figure.figsize'] = (20,5)
 
 
-from circllhist import Circllhist
-from circonusapi import circonusdata
+# Circonus-specific helpers are optional: the notebook itself does not use them,
+# so skip them when the libraries or ~/work/.circonusrc.json are not available.
+try:
+    from circllhist import Circllhist
+    from circonusapi import circonusdata
 
-with open(os.path.expanduser("~/work/.circonusrc.json"),"r") as fh: 
-    config = json.load(fh)
+    with open(os.path.expanduser("~/work/.circonusrc.json"),"r") as fh:
+        config = json.load(fh)
+except (ImportError, OSError):
+    config = None
 
 def caql(account, q, start, period, count):
     circ = circonusdata.CirconusData(config[account])
